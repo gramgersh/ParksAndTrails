@@ -25,7 +25,7 @@ namespace ParkyAPI.Controllers
 
         public NationalParksController(INationalParkRepository npRepo, IMapper mapper)
         {
-            _npRepo= npRepo;
+            _npRepo = npRepo;
             _mapper = mapper;
         }
 
@@ -40,7 +40,22 @@ namespace ParkyAPI.Controllers
             {
                 objDto.Add(_mapper.Map<NationalParkDto>(obj));
             }
-            
+
+            return Ok(objDto);
+        }
+
+        // Get single park.  Tell HttpGet that we expect a parameter
+        // so that we don't clash with the above HttpGet which has
+        // no parameters defined.
+        [HttpGet("{nationalParkId:int}")]
+        public IActionResult GetNationalPark(int nationalParkID)
+        {
+            var obj = _npRepo.GetNationalPark(nationalParkID);
+            if ( obj == null )
+            {
+                return NotFound();
+            }
+            var objDto = _mapper.Map<NationalParkDto>(obj);
             return Ok(objDto);
         }
     }
