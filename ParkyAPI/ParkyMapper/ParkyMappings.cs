@@ -2,7 +2,7 @@ using AutoMapper;
 using ParkyAPI.Models;
 using ParkyAPI.Models.Dtos;
 
-namespace ParkyAPI.Mapper
+namespace ParkyAPI.ParkyMapper
 {
     public class ParkyMappings : Profile
     {
