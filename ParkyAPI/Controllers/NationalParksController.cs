@@ -13,6 +13,8 @@ namespace ParkyAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    // All methods return a 400 Bad Request
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public class NationalParksController : Controller
     {
 
@@ -36,6 +38,9 @@ namespace ParkyAPI.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        // Add a couple of ProducesResponseType() attributes to help with
+        // the Swagger documentation
+        [ProducesResponseType(StatusCodes.Status200OK,Type = typeof(List<NationalParkDto>))]
         public IActionResult GetNationalParks()
         {
             var objList = _npRepo.GetNationalParks();
@@ -60,6 +65,9 @@ namespace ParkyAPI.Controllers
         /// <param name="nationalParkID">The Id of the National Park.</param>
         /// <returns></returns>
         [HttpGet("{nationalParkId:int}", Name = "GetNationalPark")]
+        [ProducesResponseType(StatusCodes.Status200OK,Type = typeof(NationalParkDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public IActionResult GetNationalPark(int nationalParkID)
         {
             var obj = _npRepo.GetNationalPark(nationalParkID);
@@ -72,6 +80,9 @@ namespace ParkyAPI.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created,Type = typeof(NationalParkDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CreateNationalPark([FromBody] NationalParkDto nationalParkDto)
         {
             if (nationalParkDto == null)
@@ -81,7 +92,7 @@ namespace ParkyAPI.Controllers
             if (_npRepo.NationalParkExists(nationalParkDto.Name))
             {
                 ModelState.AddModelError("", "National Park Exists!");
-                return StatusCode(404, ModelState);
+                return StatusCode(StatusCodes.Status409Conflict, ModelState);
             }
             var nationalParkObj = _mapper.Map<NationalPark>(nationalParkDto);
 
@@ -102,6 +113,9 @@ namespace ParkyAPI.Controllers
         }
 
         [HttpPut("{nationalParkId:int}", Name ="UpdateNationalPark")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult UpdateNationalPark(int nationalParkId, [FromBody]NationalParkDto nationalParkDto)
         {
 
@@ -112,7 +126,7 @@ namespace ParkyAPI.Controllers
             if (! _npRepo.NationalParkExists(nationalParkId))
             {
                 ModelState.AddModelError("", "National Park does not exist!");
-                return StatusCode(404, ModelState);
+                return StatusCode(StatusCodes.Status404NotFound, ModelState);
             }
 
             var nationalParkObj = _mapper.Map<NationalPark>(nationalParkDto);
@@ -126,6 +140,10 @@ namespace ParkyAPI.Controllers
         }
 
         [HttpDelete("{nationalParkId:int}", Name = "DeleteNationalPark")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult DeleteNationalPark(int nationalParkId)
         {
 
