@@ -39,6 +39,18 @@ namespace ParkyAPI
 
             services.AddAutoMapper(typeof(ParkyMappings));
 
+            // This is the swagger API documentation.
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("ParkyOpenAPISpec",
+                  new Microsoft.OpenApi.Models.OpenApiInfo()
+                  {
+                      Title = "Parky API",
+                      Version = "1.0.0"
+                  }
+                );
+            });
+
             services.AddControllers();
         }
 
@@ -51,6 +63,14 @@ namespace ParkyAPI
             }
 
             app.UseHttpsRedirection();
+
+            // Set upt he documentation uri and make it the default.
+            app.UseSwagger();
+            app.UseSwaggerUI(options => {
+                options.SwaggerEndpoint("/swagger/ParkyOpenAPISpec/swagger.json", "Parky API");
+                // Make this the default index page for the site.
+                options.RoutePrefix = "";
+            });
 
             app.UseRouting();
 
