@@ -54,7 +54,7 @@ namespace ParkyAPI.Controllers
         public IActionResult GetNationalPark(int nationalParkID)
         {
             var obj = _npRepo.GetNationalPark(nationalParkID);
-            if ( obj == null )
+            if (obj == null)
             {
                 return NotFound();
             }
@@ -63,28 +63,23 @@ namespace ParkyAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateNationalPark([FromBody]NationalParkDto nationalParkDto)
+        public IActionResult CreateNationalPark([FromBody] NationalParkDto nationalParkDto)
         {
-            if ( nationalParkDto == null)
+            if (nationalParkDto == null)
             {
                 return BadRequest(ModelState);
             }
-            if ( _npRepo.NationalParkExists(nationalParkDto.Name))
+            if (_npRepo.NationalParkExists(nationalParkDto.Name))
             {
                 ModelState.AddModelError("", "National Park Exists!");
                 return StatusCode(404, ModelState);
             }
-            if ( !ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var nationalParkObj = _mapper.Map<NationalPark>(nationalParkDto);
 
             // If the Create() method succeeds, the object passed in will be
             // filled with all of the created properties.  In this case, the
             // nationalParkObj will have an Id set.
-            if ( !_npRepo.CreateNationalPark(nationalParkObj))
+            if (!_npRepo.CreateNationalPark(nationalParkObj))
             {
                 ModelState.AddModelError("", $"Something went wrong when saving the record {nationalParkObj.Name}");
                 return StatusCode(500, ModelState);
@@ -94,7 +89,31 @@ namespace ParkyAPI.Controllers
             // the Name= and not the method name).  This method takes the int nationalParkId
             // option, so create a new object with the values that were filled in from
             // the Create() method above, and send in the object that was filled in.
-            return CreatedAtRoute("GetNationalPark", new { nationalParkId = nationalParkObj.Id}, nationalParkObj);
+            return CreatedAtRoute("GetNationalPark", new { nationalParkId = nationalParkObj.Id }, nationalParkObj);
+        }
+
+        [HttpPut("{nationalParkId:int}", Name ="UpdateNationalPark")]
+        public IActionResult UpdateNationalPark(int nationalParkId, [FromBody]NationalParkDto nationalParkDto)
+        {
+
+            if (nationalParkDto == null || nationalParkId != nationalParkDto.Id)
+            {
+                return BadRequest(ModelState);
+            }
+            if (! _npRepo.NationalParkExists(nationalParkId))
+            {
+                ModelState.AddModelError("", "National Park does not exist!");
+                return StatusCode(404, ModelState);
+            }
+
+            var nationalParkObj = _mapper.Map<NationalPark>(nationalParkDto);
+            if ( ! _npRepo.UpdateNationalPark(nationalParkObj))
+            {
+                ModelState.AddModelError("", $"Something went wrong when saving the record {nationalParkObj.Name}");
+                return StatusCode(500, ModelState);
+            }
+
+            return NoContent();
         }
     }
 }
