@@ -38,6 +38,7 @@ namespace ParkyAPI
 
             // This registers the Repository, which is the DB interface to various tables.
             services.AddScoped<INationalParkRepository, NationalParkRepository>();
+            services.AddScoped<ITrailRepository, TrailRepository>();
 
             services.AddAutoMapper(typeof(ParkyMappings));
 
