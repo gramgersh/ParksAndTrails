@@ -19,7 +19,7 @@ namespace ParkyAPI.Controllers
 
         // This contains a reference to all of the db routines defined
         // in the Repository.
-        private INationalParkRepository _npRepo;
+        private readonly INationalParkRepository _npRepo;
 
         // This gives us access to the mapping methods.
         private readonly IMapper _mapper;
@@ -31,6 +31,10 @@ namespace ParkyAPI.Controllers
         }
 
         // The HTTP methods
+        /// <summary>
+        /// Get a list of National Parks.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult GetNationalParks()
         {
@@ -50,6 +54,11 @@ namespace ParkyAPI.Controllers
         // no parameters defined.
         // Set the name so that we can call this using that name from other
         // verbs.
+        /// <summary>
+        /// Retrieve a single National Park.
+        /// </summary>
+        /// <param name="nationalParkID">The Id of the National Park.</param>
+        /// <returns></returns>
         [HttpGet("{nationalParkId:int}", Name = "GetNationalPark")]
         public IActionResult GetNationalPark(int nationalParkID)
         {

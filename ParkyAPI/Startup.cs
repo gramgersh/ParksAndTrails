@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Reflection;
+using System.IO;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -46,9 +48,12 @@ namespace ParkyAPI
                   new Microsoft.OpenApi.Models.OpenApiInfo()
                   {
                       Title = "Parky API",
-                      Version = "1.0.0"
-                  }
-                );
+                      Version = "1.0.0",
+                      Description = "Udemy Parky AMI"
+                  });
+                var xmlCommentFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentFile);
+                options.IncludeXmlComments(xmlCommentsFullPath);
             });
 
             services.AddControllers();
