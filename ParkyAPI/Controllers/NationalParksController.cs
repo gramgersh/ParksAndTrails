@@ -7,6 +7,7 @@ using AutoMapper;
 using ParkyAPI.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using ParkyAPI.Models.Dtos;
+using ParkyAPI.Models;
 
 namespace ParkyAPI.Controllers
 {
@@ -47,7 +48,9 @@ namespace ParkyAPI.Controllers
         // Get single park.  Tell HttpGet that we expect a parameter
         // so that we don't clash with the above HttpGet which has
         // no parameters defined.
-        [HttpGet("{nationalParkId:int}")]
+        // Set the name so that we can call this using that name from other
+        // verbs.
+        [HttpGet("{nationalParkId:int}", Name = "GetNationalPark")]
         public IActionResult GetNationalPark(int nationalParkID)
         {
             var obj = _npRepo.GetNationalPark(nationalParkID);
@@ -57,6 +60,41 @@ namespace ParkyAPI.Controllers
             }
             var objDto = _mapper.Map<NationalParkDto>(obj);
             return Ok(objDto);
+        }
+
+        [HttpPost]
+        public IActionResult CreateNationalPark([FromBody]NationalParkDto nationalParkDto)
+        {
+            if ( nationalParkDto == null)
+            {
+                return BadRequest(ModelState);
+            }
+            if ( _npRepo.NationalParkExists(nationalParkDto.Name))
+            {
+                ModelState.AddModelError("", "National Park Exists!");
+                return StatusCode(404, ModelState);
+            }
+            if ( !ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var nationalParkObj = _mapper.Map<NationalPark>(nationalParkDto);
+
+            // If the Create() method succeeds, the object passed in will be
+            // filled with all of the created properties.  In this case, the
+            // nationalParkObj will have an Id set.
+            if ( !_npRepo.CreateNationalPark(nationalParkObj))
+            {
+                ModelState.AddModelError("", $"Something went wrong when saving the record {nationalParkObj.Name}");
+                return StatusCode(500, ModelState);
+            }
+
+            // Rather than return just OK, run the "GetNationalPark" method (matches
+            // the Name= and not the method name).  This method takes the int nationalParkId
+            // option, so create a new object with the values that were filled in from
+            // the Create() method above, and send in the object that was filled in.
+            return CreatedAtRoute("GetNationalPark", new { nationalParkId = nationalParkObj.Id}, nationalParkObj);
         }
     }
 }
