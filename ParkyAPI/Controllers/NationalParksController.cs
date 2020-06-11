@@ -110,7 +110,8 @@ namespace ParkyAPI.Controllers
             // the Name= and not the method name).  This method takes the int nationalParkId
             // option, so create a new object with the values that were filled in from
             // the Create() method above, and send in the object that was filled in.
-            return CreatedAtRoute("GetNationalPark", new { nationalParkId = nationalParkObj.Id }, nationalParkObj);
+            return CreatedAtRoute("GetNationalPark", new { version = HttpContext.GetRequestedApiVersion().ToString(),
+                nationalParkId = nationalParkObj.Id }, nationalParkObj);
         }
 
         [HttpPatch("{nationalParkId:int}", Name ="UpdateNationalPark")]

@@ -111,7 +111,8 @@ namespace ParkyAPI.Controllers
             // the Name= and not the method name).  This method takes the int trailId
             // option, so create a new object with the values that were filled in from
             // the Create() method above, and send in the object that was filled in.
-            return CreatedAtRoute("GetTrail", new { trailId = trailObj.Id }, trailObj);
+            return CreatedAtRoute("GetTrail", new {  version = HttpContext.GetRequestedApiVersion().ToString(),
+                                                trailId = trailObj.Id }, trailObj);
         }
 
         [HttpPatch("{trailId:int}", Name ="UpdateTrail")]
