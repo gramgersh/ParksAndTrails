@@ -62,15 +62,15 @@ namespace ParkyAPI.Controllers
         /// <summary>
         /// Retrieve a single National Park.
         /// </summary>
-        /// <param name="nationalParkID">The Id of the National Park.</param>
+        /// <param name="nationalParkId">The Id of the National Park.</param>
         /// <returns></returns>
         [HttpGet("{nationalParkId:int}", Name = "GetNationalPark")]
         [ProducesResponseType(StatusCodes.Status200OK,Type = typeof(NationalParkDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public IActionResult GetNationalPark(int nationalParkID)
+        public IActionResult GetNationalPark(int nationalParkId)
         {
-            var obj = _npRepo.GetNationalPark(nationalParkID);
+            var obj = _npRepo.GetNationalPark(nationalParkId);
             if (obj == null)
             {
                 return NotFound();

@@ -62,15 +62,15 @@ namespace ParkyAPI.Controllers
         /// <summary>
         /// Retrieve a single Trail.
         /// </summary>
-        /// <param name="trailID">The Id of the Trail.</param>
+        /// <param name="trailId">The Id of the Trail.</param>
         /// <returns></returns>
         [HttpGet("{trailId:int}", Name = "GetTrail")]
         [ProducesResponseType(StatusCodes.Status200OK,Type = typeof(TrailDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public IActionResult GetTrail(int trailID)
+        public IActionResult GetTrail(int trailId)
         {
-            var obj = _trailRepo.GetTrail(trailID);
+            var obj = _trailRepo.GetTrail(trailId);
             if (obj == null)
             {
                 return NotFound();
