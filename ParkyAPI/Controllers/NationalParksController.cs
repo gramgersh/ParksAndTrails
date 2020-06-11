@@ -11,9 +11,10 @@ using ParkyAPI.Models;
 
 namespace ParkyAPI.Controllers
 {
-    [Route("api/[controller]")]
+    //[Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/nationalparks")]
     [ApiController]
-    [ApiExplorerSettings(GroupName = "ParkyOpenAPISpecNP")]
+    //[ApiExplorerSettings(GroupName = "ParkyOpenAPISpecNP")]
     // All methods return a 400 Bad Request
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public class NationalParksController : Controller
@@ -47,8 +48,7 @@ namespace ParkyAPI.Controllers
             var objList = _npRepo.GetNationalParks();
             var objDto = new List<NationalParkDto>();
 
-            foreach (var obj in objList)
-            {
+            foreach (var obj in objList) {
                 objDto.Add(_mapper.Map<NationalParkDto>(obj));
             }
 
