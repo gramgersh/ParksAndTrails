@@ -45,10 +45,17 @@ namespace ParkyAPI
             // This is the swagger API documentation.
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("ParkyOpenAPISpec",
+                options.SwaggerDoc("ParkyOpenAPISpecNP",
                   new Microsoft.OpenApi.Models.OpenApiInfo()
                   {
-                      Title = "Parky API",
+                      Title = "Parky API (National Park)",
+                      Version = "1.0.0",
+                      Description = "Udemy Parky AMI"
+                  });
+                options.SwaggerDoc("ParkyOpenAPISpecTrails",
+                  new Microsoft.OpenApi.Models.OpenApiInfo()
+                  {
+                      Title = "Parky API (Trails)",
                       Version = "1.0.0",
                       Description = "Udemy Parky AMI"
                   });
@@ -73,7 +80,8 @@ namespace ParkyAPI
             // Set upt he documentation uri and make it the default.
             app.UseSwagger();
             app.UseSwaggerUI(options => {
-                options.SwaggerEndpoint("/swagger/ParkyOpenAPISpec/swagger.json", "Parky API");
+                options.SwaggerEndpoint("/swagger/ParkyOpenAPISpecNP/swagger.json", "Parky API National Parks");
+                options.SwaggerEndpoint("/swagger/ParkyOpenAPISpecTrails/swagger.json", "Parky API Trails");
                 // Make this the default index page for the site.
                 options.RoutePrefix = "";
             });
