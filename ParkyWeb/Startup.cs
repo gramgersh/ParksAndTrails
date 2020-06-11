@@ -23,7 +23,10 @@ namespace ParkyWeb
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            // The AddRazorRuntimeCompilation allows you to change the underlying
+            // html text without having to stop/start the service.
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            services.AddHttpClient();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
