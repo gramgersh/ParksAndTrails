@@ -1,10 +1,10 @@
 using System.Net.Http;
 using ParkyWeb.Models;
-using ParkyWeb.Repository.IRespository;
+using ParkyWeb.Repository.IRepository;
 
 namespace ParkyWeb.Repository
 {
-    public class NationalParkRepository : ParkyWeb.Repository.Respository<NationalPark>, INationalParkRepository
+    public class NationalParkRepository : Repository<NationalPark>, INationalParkRepository
     {
         private readonly IHttpClientFactory _clientFactory;
 

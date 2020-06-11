@@ -3,15 +3,15 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using ParkyWeb.Repository.IRespository;
+using ParkyWeb.Repository.IRepository;
 
 namespace ParkyWeb.Repository
 {
-    public class Respository<T> : IRespository<T> where T : class
+    public class Repository<T> : IRepository<T> where T : class
     {
         private readonly IHttpClientFactory _clientFactory;
 
-        public Respository(IHttpClientFactory clientFactory)
+        public Repository(IHttpClientFactory clientFactory)
         {
             _clientFactory = clientFactory;
         }

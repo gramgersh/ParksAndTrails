@@ -1,10 +1,10 @@
 using System.Net.Http;
 using ParkyWeb.Models;
-using ParkyWeb.Repository.IRespository;
+using ParkyWeb.Repository.IRepository;
 
 namespace ParkyWeb.Repository
 {
-    public class TrailRepository : ParkyWeb.Repository.Respository<Trail>, ITrailRepository
+    public class TrailRepository : Repository<Trail>, ITrailRepository
     {
         private readonly IHttpClientFactory _clientFactory;
 

@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ParkyWeb.Repository.IRespository
+namespace ParkyWeb.Repository.IRepository
 {
-    public interface IRespository<T> where T: class
+    public interface IRepository<T> where T: class
     {
         Task<T> GetAsync(string url, int Id);
         Task<IEnumerable<T>> GetAllAsync(string url);
