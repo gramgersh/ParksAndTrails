@@ -81,6 +81,32 @@ namespace ParkyAPI.Controllers
             return Ok(objDto);
         }
 
+        /// <summary>
+        /// Retrieve trails from a national park
+        /// </summary>
+        /// <param name="nationalParkId">The Id of the NationalPark.</param>
+        /// <returns></returns>
+        // In this HttpGet() attribute, we need to add a route using the
+        // action name, because there is another HttpGet() method with the same signature.
+        [HttpGet("[action]/{nationalParkId:int}", Name = "GetTrailInNationalPark")]
+        [ProducesResponseType(StatusCodes.Status200OK,Type = typeof(TrailDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public IActionResult GetTrailInNationalPark(int nationalParkId)
+        {
+            var objList = _trailRepo.GetTrailsInNationalPark(nationalParkId);
+            if (objList == null)
+            {
+                return NotFound();
+            }
+            var objDto = new List<TrailDto>();
+            foreach (var obj in objList)
+            {
+                objDto.Add(_mapper.Map<TrailDto>(obj));
+            }
+            return Ok(objDto);
+        }
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created,Type = typeof(TrailDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

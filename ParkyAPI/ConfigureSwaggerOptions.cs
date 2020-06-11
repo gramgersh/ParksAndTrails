@@ -1,3 +1,6 @@
+using System;
+using System.IO;
+using System.Reflection;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -9,9 +12,10 @@ namespace ParkyAPI
     {
         readonly IApiVersionDescriptionProvider provider;
         public ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider) => this.provider = provider;
-        public void Configure (SwaggerGenOptions options)
+        public void Configure(SwaggerGenOptions options)
         {
-            foreach (var desc in provider.ApiVersionDescriptions) {
+            foreach (var desc in provider.ApiVersionDescriptions)
+            {
                 options.SwaggerDoc(
                     desc.GroupName, new Microsoft.OpenApi.Models.OpenApiInfo()
                     {
@@ -20,6 +24,9 @@ namespace ParkyAPI
                     }
                 );
             }
+            var xmlCommentFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            var xmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentFile);
+            options.IncludeXmlComments(xmlCommentsFullPath);
         }
     }
 }
