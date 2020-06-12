@@ -91,7 +91,8 @@ namespace ParkyAPI
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            // Temp turned off, as we have a self-signed cert.
+            // app.UseHttpsRedirection();
 
             // Set upt he documentation uri and make it the default.
             app.UseSwagger();
