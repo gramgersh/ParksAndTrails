@@ -30,21 +30,24 @@ namespace ParkyWeb.Controllers
         public async Task<IActionResult> Upsert(int? id)
         {
             IEnumerable<NationalPark> npList = await _npRepo.GetAllAsync(SD.NationalParkAPIPath);
+
             TrailsVM objVM = new TrailsVM()
             {
                 NationalParkList = npList.Select(i => new SelectListItem
                 {
                     Text = i.Name,
                     Value = i.Id.ToString()
-                })
+                }),
+                Trail = new Trail()
             };
+
             if (id == null)
             {
                 // This will be true for insert/create
                 return View(objVM);
             }
 
-            //flow will come here for update
+            //Flow will come here for update
             objVM.Trail = await _trailRepo.GetAsync(SD.TrailAPIPath, id.GetValueOrDefault());
             if (objVM.Trail == null)
             {
@@ -71,7 +74,18 @@ namespace ParkyWeb.Controllers
             }
             else
             {
-                return View(obj);
+                IEnumerable<NationalPark> npList = await _npRepo.GetAllAsync(SD.NationalParkAPIPath);
+
+                TrailsVM objVM = new TrailsVM()
+                {
+                    NationalParkList = npList.Select(i => new SelectListItem
+                    {
+                        Text = i.Name,
+                        Value = i.Id.ToString()
+                    }),
+                    Trail = obj.Trail
+                };
+                return View(objVM);
             }
         }
         public async Task<IActionResult> GetAllTrail()
@@ -87,10 +101,7 @@ namespace ParkyWeb.Controllers
             {
                 return Json(new { success = true, message = "Delete Successful" });
             }
-            else
-            {
-                return Json(new { success = false, message = "Delete Failed" });
-            }
+            return Json(new { success = false, message = "Delete Not Successful" });
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ParkyWeb.Repository.IRepository;
-
+using System.IO;
 
 namespace ParkyWeb.Controllers
 {
@@ -37,7 +37,7 @@ namespace ParkyWeb.Controllers
             obj = await _npRepo.GetAsync(SD.NationalParkAPIPath, id.GetValueOrDefault());
             if (obj == null)
             {
-                return NotFound(); ;
+                return NotFound();
             }
             return View(obj);
         }
@@ -54,7 +54,7 @@ namespace ParkyWeb.Controllers
                     byte[] p1 = null;
                     using (var fs1 = files[0].OpenReadStream())
                     {
-                        using (var ms1 = new System.IO.MemoryStream())
+                        using (var ms1 = new MemoryStream())
                         {
                             fs1.CopyTo(ms1);
                             p1 = ms1.ToArray();
@@ -95,10 +95,7 @@ namespace ParkyWeb.Controllers
             {
                 return Json(new { success = true, message = "Delete Successful" });
             }
-            else
-            {
-                return Json(new { success = false, message = "Delete Failed" });
-            }
+            return Json(new { success = false, message = "Delete Not Successful" });
         }
     }
 }
