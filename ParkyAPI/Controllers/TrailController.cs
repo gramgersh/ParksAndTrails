@@ -17,7 +17,7 @@ namespace ParkyAPI.Controllers
     //[ApiExplorerSettings(GroupName = "ParkyOpenAPISpecTrails")]
     // All methods return a 400 Bad Request
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public class TrailsController : Controller
+    public class TrailsController : ControllerBase
     {
 
 

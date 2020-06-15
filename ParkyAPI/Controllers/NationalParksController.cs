@@ -8,6 +8,7 @@ using ParkyAPI.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using ParkyAPI.Models.Dtos;
 using ParkyAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ParkyAPI.Controllers
 {
@@ -17,7 +18,7 @@ namespace ParkyAPI.Controllers
     //[ApiExplorerSettings(GroupName = "ParkyOpenAPISpecNP")]
     // All methods return a 400 Bad Request
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public class NationalParksController : Controller
+    public class NationalParksController : ControllerBase
     {
 
 
@@ -68,6 +69,7 @@ namespace ParkyAPI.Controllers
         [HttpGet("{nationalParkId:int}", Name = "GetNationalPark")]
         [ProducesResponseType(StatusCodes.Status200OK,Type = typeof(NationalParkDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize]
         [ProducesDefaultResponseType]
         public IActionResult GetNationalPark(int nationalParkId)
         {
