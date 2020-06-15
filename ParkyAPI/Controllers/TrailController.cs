@@ -8,6 +8,7 @@ using ParkyAPI.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using ParkyAPI.Models.Dtos;
 using ParkyAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ParkyAPI.Controllers
 {
@@ -70,6 +71,7 @@ namespace ParkyAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK,Type = typeof(TrailDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
+        [Authorize(Roles = "Admin")]
         public IActionResult GetTrail(int trailId)
         {
             var obj = _trailRepo.GetTrail(trailId);
